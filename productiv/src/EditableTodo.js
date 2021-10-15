@@ -13,26 +13,33 @@ import TodoForm from "./TodoForm";
  */
 
 function EditableTodo() {
+  const [isEditing, setIsEditing] = useState(false);
 
   /** Toggle if this is being edited */
-  function toggleEdit() { }
+  function toggleEdit(evt) { 
+    setIsEditing((isEditing) ? false : true);
+  }
 
   /** Call remove fn passed to this. */
-  function handleDelete() { }
+  function handleDelete(evt) { 
+    setTodos(currTodos => currTodos.filter(todo => { 
+      console.log("id is ", id, "todo is ", todo); 
+      return id !== todo.id})
+    );
+  }
 
   /** Edit form saved; toggle isEditing and update in ancestor. */
-  function handleSave(formData) { }
+  function handleSave(formData) { 
+    update(formData);
+    toggleEdit(formData.id);
+  }
 
   return (
       <div className="EditableTodo">
 
-                EITHER
-
-                <TodoForm />
-
-                OR
-
-                <div className="mb-3">
+          {isEditing  
+                ? <TodoForm />
+                : <div className="mb-3">
                   <div className="float-right text-sm-right">
                     <button
                         className="EditableTodo-toggle btn-link btn btn-sm"
@@ -47,7 +54,7 @@ function EditableTodo() {
                   </div>
                   <Todo />
                 </div>
-
+}
       </div>
   );
 }

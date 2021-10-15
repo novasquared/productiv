@@ -7,16 +7,41 @@ import React, { useState } from "react";
  * - initialFormData
  * - handleSave: function to call in parent.
  *
+ * State:
+ * - formData: {id, title, description, priority}
+ * 
+ * This returns an HTML form for adding a no ToDo
+ * 
  * { TodoApp, EditableTodo } -> TodoForm
  */
 
-function TodoForm() {
+const INITIAL_STATE = {
+  id: "",
+  title: "",
+  description: "",
+  priority: "",
+}
+
+function TodoForm( { addToDo } ) {
+  const [formData, setFormData] = useState(INITIAL_STATE);
+
 
   /** Update form input. */
-  function handleChange(evt) { }
+  function handleChange(evt) { 
+    const { name, value } = evt.target;
+    setFormData(fData => ({
+        ...fData,
+        [name]: value,
+    }));
+  }
 
   /** Call parent function and clear form. */
-  function handleSubmit(evt) { }
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    console.log("Check out state ->", formData);
+    addTodo(formData);
+    setFormData(INITIAL_STATE);
+  }
 
   return (
       <form className="NewTodoForm" onSubmit={handleSubmit}>
@@ -48,7 +73,7 @@ function TodoForm() {
         <div className="form-group d-flex justify-content-between">
           <div className="w-75 d-flex justify-content-between">
             <label htmlFor="newTodo-priority"
-                   className="d-inline-flex">Priority:&nbsp;&nbsp;
+                  className="d-inline-flex">Priority:&nbsp;&nbsp;
             </label>
             <select id="newTodo-priority"
                     name="priority"
